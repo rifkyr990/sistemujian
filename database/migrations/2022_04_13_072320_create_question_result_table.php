@@ -21,7 +21,7 @@ class CreateQuestionResultTable extends Migration
             $table->foreignIdFor(Result::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Question::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Option::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->integer('points')->default(0);
+            $table->integer('points')->nullable();
             $table->timestamps();
         });
     }

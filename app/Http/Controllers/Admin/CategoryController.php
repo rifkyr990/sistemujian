@@ -50,9 +50,10 @@ class CategoryController extends Controller
     }
 
     public function show(Category $category)
-    {
-        return view('admin.categories.show', compact('category'));
-    }
+{
+    $questions = $category->categoryQuestions;
+    return view('admin.categories.show', compact('category', 'questions'));
+}
 
     public function edit(Category $category)
     {

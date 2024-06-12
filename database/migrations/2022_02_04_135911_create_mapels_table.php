@@ -18,6 +18,7 @@ class CreateMapelsTable extends Migration
             $table->string('nama_mapel');
             $table->string('kelas');
             $table->string('kode_mapel');
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

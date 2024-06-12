@@ -13,7 +13,7 @@ class MapelController extends Controller
 {
     public function index(): View
     {
-        $mapels = Mapel::all();
+        $mapels = Mapel::with('users')->get();
 
         return view('admin.mapel.index', compact('mapels'));
     }

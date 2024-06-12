@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GuruController;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,9 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::resource('siswa',\App\Http\Controllers\Admin\SiswaController::class);
         Route::get('siswa/kelas/{kelas_id}', [\App\Http\Controllers\Admin\SiswaController::class, 'index']);
+
+        Route::get('/siswa/{siswa}/add-mapel', [\App\Http\Controllers\Admin\SiswaController::class, 'addSubject'])->name('siswa.addSubject');
+        Route::post('/siswa/{siswa}/store-mapel', [\App\Http\Controllers\Admin\SiswaController::class, 'storeSubject'])->name('siswa.storeSubject');
         // categories
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
         Route::delete('categories_mass_destroy', [\App\Http\Controllers\Admin\CategoryController::class, 'massDestroy'])->name('categories.mass_destroy');

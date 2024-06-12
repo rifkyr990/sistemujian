@@ -14,9 +14,9 @@ class Mapel extends Model
         'kode_mapel',
     ];
 
-    public function user()
+    public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'mapel_user', 'mapel_id', 'user_id');
     }
 
     public function category()

@@ -32,7 +32,9 @@
                                 <th>Mata pelajaran</th>
                                 <th>Guru pengampu</th>
                                 <th>Kelas</th>
-                                <th>Waktu mulai</th>
+                                <th>Tanggal Ujian</th>
+                                <th>Jam mulai</th>
+                                <th>Jam selesai</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,11 +49,16 @@
                                 <td> {{ $category->mapel?->nama_mapel }} </td>
                                 <td>{{ $category->user?->name }}</td>
                                 <td> {{ $category->mapel?->kelas }} </td>
-                                <td> {{ $category->tanggal_mulai }} </td>
+                                <td> {{ $category->tanggal_ujian }} </td>
+                                <td> {{ $category->jam_mulai }} </td>
+                                <td> {{ $category->jam_selesai }} </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-info">
                                             <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a href="{{ route('admin.categories.show', $category->id) }}" class="btn btn-primary">
+                                            <i class="fa fa-eye"></i>
                                         </a>
                                         <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">
                                             @csrf

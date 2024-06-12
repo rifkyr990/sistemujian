@@ -111,14 +111,6 @@
     </li>
     @endcan
 
-    @can('option_access')
-    <li class="nav-item {{ request()->is('admin/options') || request()->is('admin/options') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.options.index') }}">
-            <i class="fas fa-cogs"></i>
-            <span>{{ __('Pilihan Ganda') }}</span></a>
-    </li>
-    @endcan
-
     @can('result_access')
     <li class="nav-item {{ request()->is('admin/results') || request()->is('admin/results') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.results.index') }}">

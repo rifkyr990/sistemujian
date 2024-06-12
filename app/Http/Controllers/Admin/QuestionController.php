@@ -10,14 +10,15 @@ use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Admin\QuestionRequest;
 use App\Models\Category;
+use App\Models\Option;
+use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
     public function index(): View
     {
         abort_if(Gate::denies('question_access'), Response::HTTP_FORBIDDEN,'Akses tidak diizinkan');
-        $questions = Question::all();
-
+        $questions = Question::with('category', 'options')->get(); // Pastikan untuk memuat relasi
         return view('admin.questions.index', compact('questions'));
     }
 
@@ -30,15 +31,39 @@ class QuestionController extends Controller
     }
 
     public function store(QuestionRequest $request): RedirectResponse
-    {
-        abort_if(Gate::denies('question_create'), Response::HTTP_FORBIDDEN,'Akses tidak diizinkan');
-        Question::create($request->validated());
+{
+    abort_if(Gate::denies('question_create'), Response::HTTP_FORBIDDEN, 'Akses tidak diizinkan');
 
-        return redirect()->route('admin.questions.index')->with([
-            'message' => 'successfully created !',
-            'alert-type' => 'success'
+    $request->validate([
+        'question_text' => 'required|string',
+        'options' => 'required|array|min:2', // Minimal dua jawaban
+        'options.*' => 'required|string', // Pastikan setiap opsi adalah string yang valid
+        'correct_option' => 'required|integer', // Validasi untuk memastikan nilai yang dikirimkan adalah integer (indeks opsi)
+    ]);
+
+    // Simpan pertanyaan
+    $question = Question::create([
+        'question_text' => $request->input('question_text'),
+        'category_id' => $request->input('category_id'), // Menyertakan category_id
+    ]);
+
+    // Simpan jawaban
+    foreach ($request->input('options') as $key => $option) {
+        $isCorrect = $key == $request->input('correct_option'); // Memeriksa apakah indeks opsi saat ini adalah jawaban yang benar
+        Option::create([
+            'question_id' => $question->id,
+            'option_text' => $option, // Menyertakan option_text
+            'is_correct' => $isCorrect,
         ]);
     }
+
+    return redirect()->route('admin.questions.index')->with([
+        'message' => 'Successfully created!',
+        'alert-type' => 'success'
+    ]);
+}
+
+
 
     public function show(Question $question): View
     {
@@ -53,16 +78,42 @@ class QuestionController extends Controller
         return view('admin.questions.edit', compact('question', 'categories'));
     }
 
-    public function update(QuestionRequest $request, Question $question): RedirectResponse
-    {
-        abort_if(Gate::denies('question_edit'), Response::HTTP_FORBIDDEN,'Akses tidak diizinkan');
-        $question->update($request->validated());
+    public function update(Request $request, $id)
+{
+    abort_if(Gate::denies('question_edit'), Response::HTTP_FORBIDDEN, 'Akses tidak diizinkan');
 
-        return redirect()->route('admin.questions.index')->with([
-            'message' => 'successfully updated !',
-            'alert-type' => 'info'
+    $request->validate([
+        'question_text' => 'required|string',
+        'options' => 'required|array|min:2',
+        'options.*' => 'required|string',
+        'correct_option' => 'required|integer', // Rubah validasi menjadi integer
+    ]);
+
+    $question = Question::findOrFail($id);
+
+    $question->update([
+        'question_text' => $request->input('question_text'),
+        'category_id' => $request->input('category_id'),
+    ]);
+
+    // Hapus opsi yang sudah ada
+    $question->options()->delete();
+
+    foreach ($request->input('options') as $index => $optionText) {
+        $isCorrect = $request->input('correct_option') == $index;
+
+        Option::create([
+            'question_id' => $question->id,
+            'option_text' => $optionText,
+            'is_correct' => $isCorrect,
         ]);
     }
+
+    return redirect()->route('admin.questions.index')->with([
+        'message' => 'Successfully updated!',
+        'alert-type' => 'success',
+    ]);
+}
 
     public function destroy(Question $question): RedirectResponse
     {

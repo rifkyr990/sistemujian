@@ -46,8 +46,9 @@ class User extends Authenticatable
         return $this->hasMany(Category::class, 'user_id');
     }
     
-    public function mapel()
+    public function mapels()
     {
-        return $this->belongsTo(mapel::class);
+        return $this->belongsToMany(Mapel::class, 'mapel_user', 'user_id', 'mapel_id');
     }
+
 }

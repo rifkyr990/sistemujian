@@ -42,8 +42,16 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="tanggal_mulai">{{ __('Tanggal mulai')}}</label>
-                    <input type="datetime-local" class="form-control" name="tanggal_mulai" id="tanggal_mulai">
+                    <label for="tanggal_ujian">{{ __('Tanggal mulai')}}</label>
+                    <input type="date" class="form-control" name="tanggal_ujian" id="tanggal_ujian">
+                </div>
+                <div class="form-group">
+                    <label for="jam_mulai">{{ __('Jam mulai')}}</label>
+                    <input type="time" class="form-control" name="jam_mulai" id="jam_mulai">
+                </div>
+                <div class="form-group">
+                    <label for="jam_selesai">{{ __('Jam selesai')}}</label>
+                    <input type="time" class="form-control" name="jam_selesai" id="jam_selesai">
                 </div>
                 <div class="form-group">
                     <label for="user_id">{{ __('Guru Pengampu') }}</label>

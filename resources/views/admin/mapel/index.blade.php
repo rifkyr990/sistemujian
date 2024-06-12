@@ -25,7 +25,7 @@
                             <th width="10"></th>
                             <th>No</th>
                             <th>Nama Mata Pelajaran</th>
-                            <th>mapel</th>
+                            <th>Kelas</th>
                             <th>Kode mapel</th>
                             <th>Action</th>
                         </tr>
@@ -36,22 +36,23 @@
                             <td></td>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $data->nama_mapel }}</td>
-                            <td>{{ $data->mapel }}</td>
+                            <td>{{ $data->kelas }}</td>
                             <td>{{ $data->kode_mapel }}</td>
                             <td>
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.mapel.edit', $data->id) }}" class="btn btn-info">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-                                        <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.mapel.destroy', $data->id) }}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="btn btn-danger" style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ route('admin.mapel.edit', $data->id) }}" class="btn btn-warning">
+                                        <i class="fa fa-pen-alt"></i>
+                                    </a>
+                                    <a href="{{ route('admin.mapel.show', $data->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                                    <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.mapel.destroy', $data->id) }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger" style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                         @empty
                         <tr>
@@ -117,6 +118,5 @@
                 .columns.adjust();
         });
     })
-
 </script>
 @endpush
