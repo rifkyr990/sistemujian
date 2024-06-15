@@ -1,24 +1,29 @@
 @extends('layouts.admin')
+
 @section('content')
-<div class="container">
-    @if ($mataPelajaran->isEmpty())
-        <p>Tidak ada kategori yang diampu.</p>
-    @else
-        <h1 class="fw-bold">
-            {{ $mataPelajaran->pluck('name')->implode(', ') }}
-            @if ($mataPelajaran->first()->kelas)
-                Kelas {{ $mataPelajaran->first()->kelas->nama_kelas }}
-            @endif
-        </h1>
-        <p>Ujian kompetensi siswa</p>
-        <div class="row">
-            <div class="col-auto">
-                <button class="btn btn-primary">Buat Soal</button>
-                <button class="btn btn-primary">Nilai</button>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Mata Pelajaran</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Mata Pelajaran</th>
+                            <th>Kelas</th>
+                            <th>Kode Mapel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $mataPelajaran->nama_mapel }}</td>
+                    </tbody>
+                </table>
             </div>
         </div>
-    @endif
+    </div>
 </div>
-
-
 @endsection

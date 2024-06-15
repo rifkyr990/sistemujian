@@ -45,6 +45,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Category::class, 'user_id');
     }
+
+    public function mapel()
+    {
+        return $this->hasMany(Mapel::class);
+    }
     
     public function mapels()
     {

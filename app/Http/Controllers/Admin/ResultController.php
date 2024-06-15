@@ -16,6 +16,8 @@ class ResultController extends Controller
         $results = Result::all();
 
         return view('admin.results.index', compact('results'));
+
+        
     }
 
     public function create(): View

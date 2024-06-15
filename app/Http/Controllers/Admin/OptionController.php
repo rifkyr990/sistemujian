@@ -33,7 +33,6 @@ class OptionController extends Controller
     public function store(OptionRequest $request): RedirectResponse
     {
         abort_if(Gate::denies('option_create'), Response::HTTP_FORBIDDEN, 'Akses tidak diizinkan');
-        $ques
         foreach ($request->input('options') as $option) {
             $isCorrect = $request->input('correct_option') == $option; // Mengatur jawaban yang benar
             Option::create([

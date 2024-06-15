@@ -3,16 +3,16 @@
 @section('content')
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">
-                {{ __('mapel') }}
-            </h6>
+        <div class="card-header py-4 d-flex">
+            <h2 class="m-0 font-weight-bold text-dark">
+                {{ __('Daftar Mata Pelajaran') }} {{ $kelas }}
+            </h2>
             <div class="ml-auto">
-                <a href="{{ route('admin.mapel.create') }}" class="btn btn-primary">
-                    <span class="icon text-white-50">
-                        <i class="fa fa-plus"></i>
+                <a href="{{ route('admin.mapel.create') }}" class="btn bg-success-dashboard">
+                    <span class="icon text-dark">
+                        <i class="fa fa-plus-circle"></i>
                     </span>
-                    <span class="text">{{ __('New mapel') }}</span>
+                    <span class="text"> {{ __('Mapel Baru') }}</span>
                 </a>
             </div>
         </div>
@@ -20,11 +20,12 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover datatable datatable-mapel" cellspacing="0"
                     width="100%">
-                    <thead>
+                    <thead class="bg-primary-dashboard text-light">
                         <tr>
                             <th width="10"></th>
                             <th>No</th>
                             <th>Nama Mata Pelajaran</th>
+                            <th>Guru Pengampu</th>
                             <th>Kelas</th>
                             <th>Kode mapel</th>
                             <th>Action</th>
@@ -36,6 +37,7 @@
                             <td></td>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $data->nama_mapel }}</td>
+                            <td>{{ $data->user?->name }}</td>
                             <td>{{ $data->kelas }}</td>
                             <td>{{ $data->kode_mapel }}</td>
                             <td>
@@ -43,11 +45,14 @@
                                     <a href="{{ route('admin.mapel.edit', $data->id) }}" class="btn btn-warning">
                                         <i class="fa fa-pen-alt"></i>
                                     </a>
-                                    <a href="{{ route('admin.mapel.show', $data->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                                    <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.mapel.destroy', $data->id) }}" method="POST">
+                                    <a href="{{ route('admin.mapel.show', $data->id) }}" class="btn btn-info btn-sm"><i
+                                            class="fa fa-eye"></i></a>
+                                    <form onclick="return confirm('are you sure ? ')" class="d-inline"
+                                        action="{{ route('admin.mapel.destroy', $data->id) }}" method="POST">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger" style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
+                                        <button class="btn btn-danger"
+                                            style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>

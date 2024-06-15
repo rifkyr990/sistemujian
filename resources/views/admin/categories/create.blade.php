@@ -5,7 +5,6 @@
 
     <!-- Page Heading -->
 
-
     @if($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -17,55 +16,73 @@
     @endif
 
     <!-- Content Row -->
-    <div class="card shadow">
-        <div class="card-header">
+    <div class="container">
+        <div class="card-header bg-transparent">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">{{ __('Ujian') }}</h1>
-                <a href="{{ route('admin.categories.index') }}"
-                    class="btn btn-primary btn-sm shadow-sm">{{ __('Go Back') }}</a>
+                <h1 class="fw-heading">{{ __('Tambah Jadwal Ujian') }}</h1>
             </div>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.categories.store') }}" method="POST">
                 @csrf
-                <div class="form-group">
-                    <label for="name">{{ __('Nama ujian') }}</label>
-                    <input type="text" class="form-control" id="name" placeholder="{{ __('nama mata pelajaran') }}"
-                        name="name" value="{{ old('name') }}" />
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">{{ __('Judul ujian') }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="name" placeholder="{{ __('Judul Ujian') }}"
+                            name="name" value="{{ old('name') }}" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="mapel_id">{{ __('mapel') }}</label>
-                    <select class="form-control" name="mapel_id" id="mapel_id">
-                        @foreach($mapels as $id => $mapel)
-                        <option value="{{ $id }}">{{ $mapel }}</option>
-                        @endforeach
-                    </select>
+                <div class="form-group row">
+                    <label for="mapel_id" class="col-sm-3 col-form-label">{{ __('Mata Pelajaran') }}</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="mapel_id" id="mapel_id">
+                            <option value="">-- Pilih Mata Pelajaran --</option>
+                            @foreach($mapels as $id => $mapel)
+                            <option value="{{ $id }}">{{ $mapel }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="tanggal_ujian">{{ __('Tanggal mulai')}}</label>
-                    <input type="date" class="form-control" name="tanggal_ujian" id="tanggal_ujian">
+                <div class="form-group row">
+                    <label for="tanggal_ujian" class="col-sm-3 col-form-label">{{ __('Tanggal mulai') }}</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" name="tanggal_ujian" id="tanggal_ujian">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="jam_mulai">{{ __('Jam mulai')}}</label>
-                    <input type="time" class="form-control" name="jam_mulai" id="jam_mulai">
+                <div class="form-group row">
+                    <label for="jam_mulai" class="col-sm-3 col-form-label">{{ __('Jam mulai') }}</label>
+                    <div class="col-sm-9">
+                        <input type="time" class="form-control" name="jam_mulai" id="jam_mulai">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="jam_selesai">{{ __('Jam selesai')}}</label>
-                    <input type="time" class="form-control" name="jam_selesai" id="jam_selesai">
+                <div class="form-group row">
+                    <label for="jam_selesai" class="col-sm-3 col-form-label">{{ __('Jam selesai') }}</label>
+                    <div class="col-sm-9">
+                        <input type="time" class="form-control" name="jam_selesai" id="jam_selesai">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="user_id">{{ __('Guru Pengampu') }}</label>
-                    <select class="form-control" name="user_id" id="user_id">
-                        @foreach($users as $id => $user)
-                        <option value="{{ $id }}">{{ $user }}</option>
-                        @endforeach
-                    </select>
+                <div class="form-group row mb-5">
+                    <label for="user_id" class="col-sm-3 col-form-label">{{ __('Guru Pengampu') }}</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="user_id" id="user_id">
+                            <option value="">{{ __('-- Pilih Guru Pengampu --') }}</option>
+                            @foreach($users as $id => $user)
+                            <option value="{{ $id }}">{{ $user }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">{{ __('Save') }}</button>
+                <div class="form-group row mt-5">
+                    <div class="col-sm-12 d-flex justify-content-end">
+                        <a href="{{ route('admin.categories.index') }}"
+                            class="btn btn-danger mx-2">{{ __('Batal') }}</a>
+                        <button type="submit" class="btn btn-success">{{ __('Simpan') }}</button>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
-
 
     <!-- Content Row -->
 

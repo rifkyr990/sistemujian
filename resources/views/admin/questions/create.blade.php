@@ -25,6 +25,7 @@
                 <div class="form-group">
                     <label for="category">{{ __('Judul Ujian') }}</label>
                     <select class="form-control" name="category_id" id="category">
+                        <option value="">{{ __('-- Pilih Kategori Ujian --')}}</option>
                         @foreach($categories as $id => $category)
                         <option value="{{ $id }}">{{ $category }}</option>
                         @endforeach

@@ -7,22 +7,22 @@
     <!-- Content Row -->
         <div class="card">
             <div class="card-header py-3 d-flex">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    {{ __('category') }}
-                </h6>
+                <h2 class="m-0 font-weight-bold text-dark">
+                    {{ __('Jadwal Ujian') }}
+                </h2>
                 <div class="ml-auto">
-                    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
-                        <span class="icon text-white-50">
-                            <i class="fa fa-plus"></i>
+                    <a href="{{ route('admin.categories.create') }}" class="btn bg-success-dashboard">
+                        <span class="icon text-black-50">
+                            <i class="fa fa-plus-circle"></i>
                         </span>
-                        <span class="text">{{ __('New category') }}</span>
+                        <span class="text">{{ __('Tambah Ujian') }}</span>
                     </a>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover datatable datatable-category" cellspacing="0" width="100%">
-                        <thead>
+                        <thead class="bg-primary-dashboard text-light">
                             <tr>
                                 <th width="10">
 

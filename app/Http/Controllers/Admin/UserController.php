@@ -54,8 +54,8 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with([
             'message' => 'User successfully created!',
             'alert-type' => 'success'
-    ]);
-}
+        ]);
+    }
 
 
     /**

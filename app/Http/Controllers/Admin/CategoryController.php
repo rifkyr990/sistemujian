@@ -58,7 +58,10 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         abort_if(Gate::denies('class_edit'), Response::HTTP_FORBIDDEN, 'Akses tidak diizinkan');
-        return view('admin.categories.edit', compact('category'));
+        $users = User::all()->pluck('name', 'id');
+        $mapels = Mapel::all()->pluck('nama_mapel', 'id');
+
+        return view('admin.categories.edit', compact('category', 'users', 'mapels'));
     }
 
     public function update(Request $request, Category $category)

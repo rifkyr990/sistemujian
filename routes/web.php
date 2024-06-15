@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('client.test');
+    return redirect()->route('dashboard.index');
 });
 
 Route::group(['middleware' => 'auth'], function() {
+    Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('test',[\App\Http\Controllers\TestController::class, 'index'])->name('client.test');
     Route::post('test',[\App\Http\Controllers\TestController::class, 'store'])->name('client.test.store');
     Route::get('results/{result_id}',[\App\Http\Controllers\ResultController::class, 'show'])->name('client.results.show');
@@ -34,17 +35,23 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('permissions_mass_destroy', [\App\Http\Controllers\Admin\PermissionController::class, 'massDestroy'])->name('permissions.mass_destroy');
         Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
         Route::delete('roles_mass_destroy', [\App\Http\Controllers\Admin\RoleController::class, 'massDestroy'])->name('roles.mass_destroy');
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         Route::delete('users_mass_destroy', [\App\Http\Controllers\Admin\UserController::class, 'massDestroy'])->name('users.mass_destroy');
-
+        
         Route::resource('guru',\App\Http\Controllers\Admin\GuruController::class);
         Route::get('guru/kelas/{kelas}', [\App\Http\Controllers\Admin\GuruController::class, 'index']);
+        Route::put('admin/guru/{guru}', [\App\Http\Controllers\Admin\GuruController::class, 'update'])->name('admin.guru.update');
 
         Route::resource('siswa',\App\Http\Controllers\Admin\SiswaController::class);
         Route::get('siswa/kelas/{kelas_id}', [\App\Http\Controllers\Admin\SiswaController::class, 'index']);
-
+        Route::put('admin/siswa/{siswa}', [\App\Http\Controllers\Admin\SiswaController::class, 'update'])->name('admin.siswa.update');
+        
         Route::get('/siswa/{siswa}/add-mapel', [\App\Http\Controllers\Admin\SiswaController::class, 'addSubject'])->name('siswa.addSubject');
         Route::post('/siswa/{siswa}/store-mapel', [\App\Http\Controllers\Admin\SiswaController::class, 'storeSubject'])->name('siswa.storeSubject');
+        // menampilkan kelas siswa
+        Route::get('/kelas', [\App\Http\Controllers\Admin\SiswaController::class, 'kelas'])->name('siswa.kelas');
+
         // categories
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
         Route::delete('categories_mass_destroy', [\App\Http\Controllers\Admin\CategoryController::class, 'massDestroy'])->name('categories.mass_destroy');
@@ -52,6 +59,7 @@ Route::group(['middleware' => 'auth'], function() {
         // categories
         Route::resource('mapel', \App\Http\Controllers\Admin\MapelController::class);
         Route::delete('mapel_mass_destroy', [\App\Http\Controllers\Admin\MapelController::class, 'massDestroy'])->name('mapel.mass_destroy');
+        Route::get('mapel/kelas/{kelas_id}', [\App\Http\Controllers\Admin\MapelController::class, 'index']);
 
 
         // questions

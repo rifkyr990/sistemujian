@@ -20,14 +20,14 @@
     <div class="container">
         <div class="card-header bg-transparent">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h2 mb-0 text-dark fw-heading">{{ __('Tambah Data Siswa') }}</h1>
+                <h1 class="h2 mb-0 text-dark fw-heading">{{ __('Tambah Data Guru') }}</h1>
             </div>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.guru.store') }}" method="POST">
                 @csrf
                 <div class="form-group row">
-                    <label for="nomer_induk" class="col-sm-3 col-form-label">{{ __('NISN') }}</label>
+                    <label for="nomer_induk" class="col-sm-3 col-form-label">{{ __('NIP') }}</label>
                     <div class="col-sm-9">
                         <input type="number" class="form-control" id="nomer_induk" placeholder="{{ __('Nomer Induk') }}"
                             name="nomer_induk" value="{{ old('nomer_induk') }}" />
@@ -88,8 +88,8 @@
                     <div class="col-sm-9">
                         <select name="roles[]" id="roles" class="form-control select2" multiple="multiple" required>
                             @foreach($roles as $id => $roleName)
-                            @if($roleName == 'Siswa')
-                            <option value="{{ $id }}" {{ ($roleName == 'Siswa') ? 'selected' : '' }}>
+                            @if($roleName == 'Guru' || $id == 3)
+                            <option value="{{ $id }}" {{ ($roleName == 'Guru' || $id == 3) ? 'selected' : '' }}>
                                 {{ $roleName }}
                             </option>
                             @endif
@@ -97,8 +97,6 @@
                         </select>
                     </div>
                 </div>
-
-
                 <div class="form-group row mt-5">
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a href="{{ route('admin.users.index') }}" class="btn btn-danger mx-2">{{ __('Batal') }}</a>

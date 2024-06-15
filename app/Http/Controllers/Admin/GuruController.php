@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Role;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Kelas;
+use App\Http\Requests\Admin\StoreUserRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
 
 class GuruController extends Controller
@@ -17,19 +18,75 @@ class GuruController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($kelas)
+{
+    $users = User::whereHas('roles', function ($query) {
+        $query->where('title', 'Guru');
+    })->where('kelas', $kelas)->with('mapel')->get();
+
+    // Mengirim data pengguna dan mata pelajaran ke view
+    return view('admin.guru.index', compact('users', 'kelas'));
+}
+
+
+    public function create() 
     {
-        $users = User::whereHas('roles', function ($query) {
-        $query->where('title', 'Guru');})->where('kelas', $kelas)->get();// Mengirim data pengguna ke view
-        return view('admin.guru.index', compact('users'));
+        $roles = Role::pluck('title', 'id');
+
+        return view('admin.guru.create', compact('roles'));
+    }
+    
+    public function edit($id)
+    {
+        $user = User::findOrFail($id); // Pastikan ini mendapatkan data guru
+        $roles = Role::all()->pluck('name', 'id'); // Pastikan ini mendapatkan data role
+        return view('admin.guru.edit', compact('user', 'roles'));
+    }
+    
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\Admin\UpdateUserRequest  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->validated() + ['password' => bcrypt($request->password)]);
+        $user->roles()->sync($request->input('roles', []));
+
+        return redirect()->route('admin.guru.index')->with([
+            'message' => 'User successfully updated!',
+            'alert-type' => 'info'
+        ]);
     }
 
-    // GuruController.php
+
+
     public function show()
     {
         $user = auth()->user();
-        $mataPelajaran = Category::where('user_id', $user->id)->get();
+        $mapel = Mapel::where('user_id', $user->id)->first();
 
-        return view('admin.guru.kelas', compact('mataPelajaran'));
-}
+        return view('admin.mapel.show', compact('mapel'));
+    }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\Admin\StoreUserRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreUserRequest $request)
+    {
+        $input = $request->all();
+        $input['password'] = bcrypt($request->password);
+        $user = User::create($input);
+        $user->roles()->sync($request->input('roles', []));
+
+        return redirect()->route('admin.guru.index')->with([
+            'message' => 'Guru successfully created!',
+            'alert-type' => 'success'
+        ]);
+    }
 }

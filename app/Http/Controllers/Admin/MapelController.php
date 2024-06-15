@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Mapel;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
@@ -11,16 +12,21 @@ use Illuminate\Http\RedirectResponse;
 
 class MapelController extends Controller
 {
-    public function index(): View
+    public function index($kelas): View
     {
-        $mapels = Mapel::with('users')->get();
-
-        return view('admin.mapel.index', compact('mapels'));
+        $mapels = Mapel::where('kelas', $kelas)->get();
+        $user = User::all();
+        return view('admin.mapel.index', compact('mapels', 'user', 'kelas'));
     }
 
     public function create(): View
     {
-        return view('admin.mapel.create');
+        $guru = User::whereHas('roles', function ($query) {
+            $query->where('title', 'guru');
+        })->pluck('name', 'id');
+        
+        
+        return view('admin.mapel.create', compact('guru'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -29,11 +35,12 @@ class MapelController extends Controller
             'nama_mapel' => 'required|string|max:255',
             'kelas' => 'required|string|max:255',
             'kode_mapel' => 'required|string|max:255',
+            'user_id' => 'required|exists:users,id',
         ]);
         
         Mapel::create($request->all());
 
-        return redirect()->route('admin.mapel.index')->with([
+        return redirect()->back()->with([
             'message' => 'successfully created !',
             'alert-type' => 'success'
         ]);
