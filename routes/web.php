@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\GuruController;
-use App\Models\User;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -17,20 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('dashboard.index');
-});
-
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'beranda'])->name('beranda');
     Route::get('test',[\App\Http\Controllers\TestController::class, 'index'])->name('client.test');
+    Route::get('nilai',[\App\Http\Controllers\Admin\SiswaController::class, 'hasilUjian'])->name('client.results');
     Route::post('test',[\App\Http\Controllers\TestController::class, 'store'])->name('client.test.store');
     Route::get('results/{result_id}',[\App\Http\Controllers\ResultController::class, 'show'])->name('client.results.show');
+    Route::get('/ujian', [\App\Http\Controllers\Admin\SiswaController::class, 'jadwalUjian'])->name('admin.client.index');
     Route::get('admin/guru/mata-pelajaran', [\App\Http\Controllers\Admin\GuruController::class, 'show'])->name('guru.categories');
 
     // admin only
     Route::group(['middleware' => 'isAdmin','prefix' => 'admin', 'as' => 'admin.'], function() {
-        Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
         Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class);
         Route::delete('permissions_mass_destroy', [\App\Http\Controllers\Admin\PermissionController::class, 'massDestroy'])->name('permissions.mass_destroy');
         Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
@@ -49,13 +44,14 @@ Route::group(['middleware' => 'auth'], function() {
         
         Route::get('/siswa/{siswa}/add-mapel', [\App\Http\Controllers\Admin\SiswaController::class, 'addSubject'])->name('siswa.addSubject');
         Route::post('/siswa/{siswa}/store-mapel', [\App\Http\Controllers\Admin\SiswaController::class, 'storeSubject'])->name('siswa.storeSubject');
+
         // menampilkan kelas siswa
         Route::get('/kelas', [\App\Http\Controllers\Admin\SiswaController::class, 'kelas'])->name('siswa.kelas');
 
         // categories
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
         Route::delete('categories_mass_destroy', [\App\Http\Controllers\Admin\CategoryController::class, 'massDestroy'])->name('categories.mass_destroy');
-
+        Route::post('categories/{category}/questions/{question}/answer', [\App\Http\Controllers\Admin\CategoryController::class, 'show'])->name('categories.answer');
         // categories
         Route::resource('mapel', \App\Http\Controllers\Admin\MapelController::class);
         Route::delete('mapel_mass_destroy', [\App\Http\Controllers\Admin\MapelController::class, 'massDestroy'])->name('mapel.mass_destroy');
@@ -77,4 +73,3 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 Auth::routes();
-

@@ -36,6 +36,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user');
     }
 
+    public function isAdmin()
+    {
+        return $this->roles()->where('title', 'admin')->exists();
+    }
+
     public function userResults()
     {
         return $this->hasMany(Result::class);

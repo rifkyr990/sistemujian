@@ -9,14 +9,19 @@ class Result extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'score'
+    ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function questions()
+    public function category()
     {
-        return $this->belongsToMany(Question::class)->withPivot(['option_id', 'points']);
+        return $this->belongsTo(Category::class);
     }
 }

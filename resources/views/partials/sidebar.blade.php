@@ -11,12 +11,23 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
+    @can('user_management_access')
     <li class="nav-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center" href="{{ route('admin.dashboard.index') }}">
             <img src="{{ asset('img/home-icon.png') }}" alt="" class="mr-2 w-auto">
             <span class="text-light mt-1">{{ __('Dashboard') }}</span>
         </a>
     </li>
+    @endcan
+
+    @cannot('user_access')
+    <li class="nav-item {{ request()->is('beranda') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center" href="{{route('beranda')}}">
+            <img src="{{ asset('img/home-icon.png') }}" alt="" class="mr-2 w-auto">
+            <span class="text-light mt-1">{{ __('Beranda') }}</span>
+        </a>
+    </li>
+    @endcan
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -76,7 +87,7 @@
     <li class="nav-item {{ request()->is('admin/siswa*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.siswa.kelas') }}">
             <i class="fas fa-cogs"></i>
-            <span class="text-light">{{ __('Kelas siswa') }}</span>
+            <span class="text-light">{{ __('Kelas') }}</span>
         </a>
     </li>
     @endcan
@@ -137,20 +148,33 @@
     </li>
     @endcan
 
-    @can('result_access')
-    <li class="nav-item mb-5 {{ request()->is('admin/results') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.results.index') }}">
+    @can('siswa_access')
+    <li class="nav-item {{ request()->is('admin/ujian*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.client.index') }}">
             <i class="fas fa-cogs"></i>
-            <span class="text-light">{{ __('Data Nilai') }}</span>
+            <span class="text-light">{{ __('Ujian') }}</span>
         </a>
     </li>
     @endcan
 
-    <!-- Button Keluar -->
-    <li class="nav-item mt-5">
-        <a class="nav-link" href="">
-        <i class="bi bi-box-arrow-right"></i>
-            <span class="text-light">{{ __('Keluar') }}</span>
+    @can('siswa_access')
+    <li class="nav-item {{ request()->is('nilai') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('client.results') }}">
+            <i class="fas fa-cogs"></i>
+            <span class="text-light">{{ __('Nilai') }}</span>
         </a>
     </li>
+    @endcan
+
+    <li class="nav-item mt-auto mx-3 btn btn-outline-light">
+        <a class="d-flex align-items-center" href="{{ route('logout') }}"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+            <span class="text-light">{{ __('Keluar') }}</span>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </li>
+
 </ul>

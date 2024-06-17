@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Models\Category;
+use App\Models\Result;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
@@ -81,6 +84,38 @@ class SiswaController extends Controller
     {
         $siswa = Auth::user();
         return view('admin.siswa.show', compact('siswa'));
+    }
+
+    public function hasilUjian() {
+        $userId = Auth::id();
+        $results = Result::where('user_id', $userId)->get();
+
+        return view('client.results', compact('results'));
+    }
+
+    public function jadwalUjian()
+    {
+        Carbon::setLocale('id');
+        $userId = Auth::id();
+        $user = auth()->user();
+        $category = Category::first();
+        $kelas = $user->kelas;
+
+        $ujian = Category::whereHas('mapel', function ($query) use ($kelas) {
+            $query->where('kelas', $kelas);
+        })->get();
+
+        if ($category) {
+            $categoryId = $category->id;
+            $results = Result::where('user_id', $userId)->where('category_id', $categoryId)->get();
+            $ujian->each(function ($data) {
+                $data->formatted_tanggal_ujian = Carbon::parse($data->tanggal_ujian)->translatedFormat('d F Y');
+                            });
+            return view('client.index', compact('ujian', 'results'));
+        } else {
+            // Handle jika category tidak ditemukan
+            return redirect()->back()->with('error', 'Category not found.');
+        }
     }
 
     public function addSubject(User $siswa)

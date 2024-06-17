@@ -25,4 +25,14 @@ class Category extends Model
     {
         return $this->belongsTo(Mapel::class);
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    public function results()
+    {
+        return $this->hasMany(Result::class);
+    }
 }

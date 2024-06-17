@@ -6,6 +6,7 @@ use App\Models\Result;
 use App\Models\Question;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Admin\ResultRequest;
 
@@ -16,8 +17,6 @@ class ResultController extends Controller
         $results = Result::all();
 
         return view('admin.results.index', compact('results'));
-
-        
     }
 
     public function create(): View

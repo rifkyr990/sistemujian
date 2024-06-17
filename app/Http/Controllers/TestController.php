@@ -25,55 +25,54 @@ class TestController extends Controller
         return view('client.test', compact('categories'));
     }
 
-    public function store(StoreTestRequest $request)
-{
-    // Ambil semua opsi yang dipilih dari permintaan
-    $selectedOptions = array_values($request->input('questions'));
+        public function store(StoreTestRequest $request)
+        {
+        // Ambil semua opsi yang dipilih dari permintaan
+        $selectedOptions = array_values($request->input('questions'));
 
-    // Temukan semua opsi yang sesuai dengan id yang dipilih
-    $options = Option::find($selectedOptions);
+        // Temukan semua opsi yang sesuai dengan id yang dipilih
+        $options = Option::find($selectedOptions);
 
-    // Hitung total poin dari semua opsi yang dipilih
-    $totalPoints = $options->sum('points');
+        // Hitung total poin dari semua opsi yang dipilih
+        $totalPoints = $options->sum('points');
 
-    // Dapatkan jumlah total pertanyaan berdasarkan jumlah opsi yang dipilih
-    $totalQuestions = count($selectedOptions);
+        $totalQuestions = count($selectedOptions);
 
-    // Hitung poin yang akan diberikan kepada pengguna berdasarkan sistem poin
-    // 100 poin dibagi dengan jumlah total pertanyaan
-    $pointPerQuestion = 100 / $totalQuestions;
+        // Hitung poin yang akan diberikan kepada pengguna berdasarkan sistem poin
+        // 100 poin dibagi dengan jumlah total pertanyaan
+        $pointPerQuestion = 100 / $totalQuestions;
 
-    // Hitung poin tambahan jika jawaban benar
-    $correctOptions = $options->filter(function ($option) {
-        return $option->is_correct;
-    });
+        // Hitung poin tambahan jika jawaban benar
+        $correctOptions = $options->filter(function ($option) {
+            return $option->is_correct;
+        });
 
-    $correctPoints = $correctOptions->count() * $pointPerQuestion;
+        $correctPoints = $correctOptions->count() * $pointPerQuestion;
 
-    // Hitung total poin akhir yang akan diberikan kepada pengguna
-    $finalPoints = $totalPoints + $correctPoints;
+        // Hitung total poin akhir yang akan diberikan kepada pengguna
+        $finalPoints = $totalPoints + $correctPoints;
 
-    // Buat hasil tes untuk pengguna
-    $result = auth()->user()->userResults()->create([
-        'total_points' => $finalPoints
-    ]);
+        // Buat hasil tes untuk pengguna
+        $result = auth()->user()->userResults()->create([
+            'total_points' => $finalPoints
+        ]);
 
-    // Persiapkan data pertanyaan yang dijawab oleh pengguna
-    $questions = $options->mapWithKeys(function ($option) use ($pointPerQuestion) {
-        $points = $option->is_correct ? $pointPerQuestion + $option->points : 0;
-        return [
-            $option->question_id => [
-                'option_id' => $option->id,
-                'points' => $points
-            ]
-        ];
-    })->toArray();
-    // Sisipkan data pertanyaan ke dalam hasil tes pengguna
-    $result->questions()->sync($questions);
+        // Persiapkan data pertanyaan yang dijawab oleh pengguna
+        $questions = $options->mapWithKeys(function ($option) use ($pointPerQuestion) {
+            $points = $option->is_correct ? $pointPerQuestion + $option->points : 0;
+            return [
+                $option->question_id => [
+                    'option_id' => $option->id,
+                    'points' => $points
+                ]
+            ];
+        })->toArray();
+        // Sisipkan data pertanyaan ke dalam hasil tes pengguna
+        $result->questions()->sync($questions);
 
-    // Redirect ke halaman hasil tes
-    return redirect()->route('client.results.show', $result->id);
-}
+        // Redirect ke halaman hasil tes
+        return redirect()->route('client.results.show', $result->id);
+    }
 
 
     public function calculateAndAddPoints()

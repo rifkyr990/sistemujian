@@ -11,6 +11,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Result;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
@@ -49,11 +51,26 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function show(Category $category)
+    public function show(Request $request, $categoryId, $questionIndex = 0)
 {
-    $questions = $category->categoryQuestions;
-    return view('admin.categories.show', compact('category', 'questions'));
-}
+    // Ambil kategori dan pertanyaan
+    $category = Category::with('questions.options')->findOrFail($categoryId);
+    $questions = $category->questions;
+    
+    if ($request->isMethod('post')) {
+        $answers = $request->session()->get('answers', []);
+        $answers[$request->question_id] = $request->answer;
+        $request->session()->put('answers', $answers);
+
+        if ($request->has('finish')) {
+            return $this->finishExam($request, $category, $questions);
+        }
+
+        return redirect()->route('admin.categories.show', ['category' => $categoryId, 'question' => $questionIndex + 1]);
+    }
+
+        return view('admin.categories.show', compact('category', 'questions'));
+    }
 
     public function edit(Category $category)
     {
@@ -99,4 +116,40 @@ class CategoryController extends Controller
 
         return response()->noContent();
     }
+
+
+    public function finishExam(Request $request, $category, $questions)
+    {
+        $totalQuestions = $questions->count();
+        $pointsPerQuestion = 100 / $totalQuestions;
+
+        $answers = $request->session()->get('answers', []);
+        $score = 0;
+
+        foreach ($questions as $question) {
+            if (isset($answers[$question->id])) {
+            $selectedOptionId = $answers[$question->id];
+            $selectedOption = $question->options->firstWhere('id', $selectedOptionId);
+
+            if ($selectedOption && $selectedOption->is_correct) {
+                $score += $pointsPerQuestion;
+                }
+            }
+        }
+
+    // Simpan skor atau hasil ujian ke dalam database
+        try {
+            Result::create([
+            'user_id' => Auth::id(),
+            'category_id' => $category->id,
+            'score' => $score,
+        ]);
+        $request->session()->forget('answers');
+            return redirect()->route('admin.result.index')->with('status', 'Ujian selesai. Skor: ' . $score);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika gagal menyimpan hasil ujian
+            return redirect()->back()->with('error', 'Gagal menyimpan hasil ujian: ' . $e->getMessage());
+        }
+    }
+
 }

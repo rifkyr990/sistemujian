@@ -12,7 +12,7 @@
                     <div class="col-md-4 mb-3">
                         <div class="card bg-success">
                             <div class="card-body">
-                                <h6 class="text-light"><a href="{{ route('admin.mapel.show', $mapel->id) }}">{{ $mapel->nama_mapel }}</a></h6>
+                                <h6 class="text-light"><a href="{{ route('admin.mapel.show', $mapel->id) }}" class="text-light">{{ $mapel->nama_mapel }}</a></h6>
                                 <span class="badge badge-pill badge-info">{{ $mapel->level }}</span>
                             </div>
                         </div>

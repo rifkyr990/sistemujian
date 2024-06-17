@@ -27,7 +27,6 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->foreignIdFor(Question::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->longText('option_text')->default('Default Option Text'); ;
-            $table->integer('points')->nullable();
             $table->boolean('is_correct')->default(false);
             $table->timestamps();
         });

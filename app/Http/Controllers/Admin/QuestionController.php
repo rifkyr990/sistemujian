@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Admin\QuestionRequest;
 use App\Models\Category;
 use App\Models\Option;
+use App\Models\Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -131,5 +133,56 @@ class QuestionController extends Controller
         Question::whereIn('id', request('ids'))->delete();
 
         return response()->noContent();
+    }
+
+    public function answer(Request $request, Question $question)
+    {
+        $answer = $request->input('answer');
+        session(['answer.' . $question->id => $answer]);
+
+        return redirect()->route('admin.categories.show', ['category' => $question->category_id, 'question' => request()->get('question', 0)]);
+    }
+
+    public function endTest(Request $request)
+{
+    // Validasi form jika diperlukan
+    $request->validate([
+        // Aturan validasi di sini jika ada
+    ]);
+
+    // Proses menghitung skor dan menyimpan hasil ke database
+    $questions = session('questions');
+    $answers = session('answers', []);
+    $totalQuestions = count($questions);
+    $correctAnswers = 0;
+
+    foreach ($questions as $question) {
+        if (isset($answers[$question->id]) && $answers[$question->id] == $question->correct_option_id) {
+            $correctAnswers++;
+        }
+    }
+
+    $score = ($correctAnswers / $totalQuestions) * 100;
+
+    // Simpan hasil ujian ke dalam tabel results
+    Result::create([
+        'user_id' => Auth::id(),
+        'category_id' => $request->category_id,
+        'score' => $score,
+    ]);
+
+    // Reset session
+    session()->forget('answers');
+    session()->forget('questions');
+
+    // Redirect ke halaman hasil ujian atau ke halaman yang sesuai
+    return redirect()->route('admin.result.index')->with('status', 'Ujian selesai. Skor Anda: ' . $score);
+}
+
+
+    public function showResults()
+    {
+        $results = Result::with('category')->where('user_id', Auth::id())->get();
+        return view('admin.results.index', compact('results'));
     }
 }
