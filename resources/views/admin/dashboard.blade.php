@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="identitas-item">
-                                        <p>SMK Negeri 1 Contoh Kota</p>
+                                        <p>SMP Al-Azhar Syifa Budi</p>
                                         <p>info@smkn1contohkota.sch.id</p>
                                         <p><a href="http://www.smkn1contohkota.sch.id"
                                                 target="_blank">www.smkn1contohkota.sch.id</a></p>

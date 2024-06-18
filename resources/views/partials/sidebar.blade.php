@@ -78,7 +78,7 @@
     <li class="nav-item {{ request()->is('admin/guru/mata-pelajaran') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('guru.categories') }}">
             <i class="fas fa-cogs"></i>
-            <span class="text-light">{{ __('Kelas') }}</span>
+            <span class="text-light">{{ __('Mata Pelajaran') }}</span>
         </a>
     </li>
     @endcan
@@ -160,6 +160,15 @@
     @can('siswa_access')
     <li class="nav-item {{ request()->is('nilai') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('client.results') }}">
+            <i class="fas fa-cogs"></i>
+            <span class="text-light">{{ __('Nilai') }}</span>
+        </a>
+    </li>
+    @endcan
+
+    @can('guru_access')
+    <li class="nav-item {{ request()->is('daftar-nilai') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('client.nilai') }}">
             <i class="fas fa-cogs"></i>
             <span class="text-light">{{ __('Nilai') }}</span>
         </a>

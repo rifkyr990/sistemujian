@@ -29,4 +29,9 @@ class Mapel extends Model
     {
         return $this->hasMany(Category::class);
     }
+
+    public function results()
+    {
+        return $this->hasMany(Result::class);
+    }
 }

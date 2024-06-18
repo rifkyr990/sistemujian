@@ -84,14 +84,18 @@
                             </a>
                             @endif
 
+                            @can('siswa_access')
                             <button type="submit" name="save" class="btn btn-primary">Simpan</button>
+                            @endcan
 
                             @if($currentQuestionIndex < $questions->count() - 1)
                             <a href="{{ route('admin.categories.show', ['category' => $category->id, 'question' => $currentQuestionIndex + 1]) }}" class="btn btn-primary">
                                 Pertanyaan Selanjutnya
                             </a>
                             @else
+                            @can('siswa_access')
                             <button type="submit" name="finish" class="btn btn-success">Selesai</button>
+                            @endcan
                             @endif
                         </div>
                     </form>

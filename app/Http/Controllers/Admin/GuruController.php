@@ -7,8 +7,11 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Models\Category;
 use App\Models\Mapel;
+use App\Models\Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuruController extends Controller
 {
@@ -18,14 +21,14 @@ class GuruController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($kelas)
-{
-    $users = User::whereHas('roles', function ($query) {
+    {
+        $users = User::whereHas('roles', function ($query) {
         $query->where('title', 'Guru');
-    })->where('kelas', $kelas)->with('mapel')->get();
+        })->where('kelas', $kelas)->with('mapel')->get();
 
     // Mengirim data pengguna dan mata pelajaran ke view
-    return view('admin.guru.index', compact('users', 'kelas'));
-}
+        return view('admin.guru.index', compact('users', 'kelas'));
+    }
 
 
     public function create() 
@@ -89,4 +92,14 @@ class GuruController extends Controller
             'alert-type' => 'success'
         ]);
     }
+
+    public function daftarNilai() {
+        $user = Auth::user();
+    
+        $categories = Category::where('user_id', $user->id)
+                          ->with(['results', 'mapel'])
+                          ->get();
+        return view('admin.guru.nilai', compact('categories'));
+    }
+    
 }

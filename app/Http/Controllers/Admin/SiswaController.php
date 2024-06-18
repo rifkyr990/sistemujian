@@ -31,14 +31,14 @@ class SiswaController extends Controller
 
     public function show(User $siswa)
     {
-        $siswa->load('mapels'); // Memuat relasi subjects
+        $siswa->load('mapels'); 
         return view('admin.siswa.show', compact('siswa'));
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id); // Pastikan ini mendapatkan data guru
-        $roles = Role::all()->pluck('name', 'id'); // Pastikan ini mendapatkan data role
+        $user = User::findOrFail($id);
+        $roles = Role::all()->pluck('name', 'id');
         return view('admin.siswa.edit', compact('user', 'roles'));
     }
     
@@ -113,7 +113,6 @@ class SiswaController extends Controller
                             });
             return view('client.index', compact('ujian', 'results'));
         } else {
-            // Handle jika category tidak ditemukan
             return redirect()->back()->with('error', 'Category not found.');
         }
     }

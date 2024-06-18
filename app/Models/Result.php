@@ -20,8 +20,8 @@ class Result extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function mapel()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Mapel::class);
     }
 }

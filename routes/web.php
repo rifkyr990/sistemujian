@@ -16,9 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'beranda'])->name('beranda');
-    Route::get('test',[\App\Http\Controllers\TestController::class, 'index'])->name('client.test');
     Route::get('nilai',[\App\Http\Controllers\Admin\SiswaController::class, 'hasilUjian'])->name('client.results');
-    Route::post('test',[\App\Http\Controllers\TestController::class, 'store'])->name('client.test.store');
+    Route::get('daftar-nilai',[\App\Http\Controllers\Admin\GuruController::class, 'daftarNilai'])->name('client.nilai');
     Route::get('results/{result_id}',[\App\Http\Controllers\ResultController::class, 'show'])->name('client.results.show');
     Route::get('/ujian', [\App\Http\Controllers\Admin\SiswaController::class, 'jadwalUjian'])->name('admin.client.index');
     Route::get('admin/guru/mata-pelajaran', [\App\Http\Controllers\Admin\GuruController::class, 'show'])->name('guru.categories');

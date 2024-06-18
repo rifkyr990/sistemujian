@@ -17,10 +17,10 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!auth()->check()) {
-            return redirect('/');
+            return redirect('/beranda');
         }
         if (auth()->user()->roles()->where('title', 'user')->count() > 0) {
-            return redirect('/');
+            return redirect('/beranda');
         }
 
         return $next($request);

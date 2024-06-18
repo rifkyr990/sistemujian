@@ -52,23 +52,21 @@ class CategoryController extends Controller
     }
 
     public function show(Request $request, $categoryId, $questionIndex = 0)
-{
-    // Ambil kategori dan pertanyaan
-    $category = Category::with('questions.options')->findOrFail($categoryId);
-    $questions = $category->questions;
+    {
+        $category = Category::with('questions.options')->findOrFail($categoryId);
+        $questions = $category->questions;
     
-    if ($request->isMethod('post')) {
-        $answers = $request->session()->get('answers', []);
-        $answers[$request->question_id] = $request->answer;
-        $request->session()->put('answers', $answers);
+        if ($request->isMethod('post')) {
+            $answers = $request->session()->get('answers', []);
+            $answers[$request->question_id] = $request->answer;
+            $request->session()->put('answers', $answers);
 
-        if ($request->has('finish')) {
-            return $this->finishExam($request, $category, $questions);
+            if ($request->has('finish')) {
+                return $this->finishExam($request, $category, $questions);
+            }
+            return redirect()->route('admin.categories.show', ['category' => $categoryId, 'question' => $questionIndex + 1]);
         }
-
-        return redirect()->route('admin.categories.show', ['category' => $categoryId, 'question' => $questionIndex + 1]);
-    }
-
+        
         return view('admin.categories.show', compact('category', 'questions'));
     }
 
@@ -136,8 +134,6 @@ class CategoryController extends Controller
                 }
             }
         }
-
-    // Simpan skor atau hasil ujian ke dalam database
         try {
             Result::create([
             'user_id' => Auth::id(),
@@ -147,7 +143,6 @@ class CategoryController extends Controller
         $request->session()->forget('answers');
             return redirect()->route('admin.result.index')->with('status', 'Ujian selesai. Skor: ' . $score);
         } catch (\Exception $e) {
-            // Tangani kesalahan jika gagal menyimpan hasil ujian
             return redirect()->back()->with('error', 'Gagal menyimpan hasil ujian: ' . $e->getMessage());
         }
     }
