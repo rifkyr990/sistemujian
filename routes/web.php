@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('results/{result_id}',[\App\Http\Controllers\ResultController::class, 'show'])->name('client.results.show');
     Route::get('/ujian', [\App\Http\Controllers\Admin\SiswaController::class, 'jadwalUjian'])->name('admin.client.index');
     Route::get('admin/guru/mata-pelajaran', [\App\Http\Controllers\Admin\GuruController::class, 'show'])->name('guru.categories');
+    Route::post('/admin/categories/verify/{id}', [\App\Http\Controllers\Admin\CategoryController::class, 'verifyExamCode'])->name('admin.categories.verify');
 
     // admin only
     Route::group(['middleware' => 'isAdmin','prefix' => 'admin', 'as' => 'admin.'], function() {

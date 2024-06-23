@@ -13,7 +13,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Kategori</th>
+                                <th>Judul Ujian</th>
                                 <th>Skor</th>
                                 <th>Tanggal Ujian</th>
                             </tr>

@@ -19,7 +19,7 @@ class SiswaController extends Controller
     public function index($kelas)
     {
         $users = User::whereHas('roles', function ($query) {
-        $query->where('title', 'Siswa');})->where('kelas', $kelas)->get();// Mengirim data pengguna ke view
+        $query->where('title', 'Siswa');})->where('kelas', $kelas)->get();
         return view('admin.siswa.index', compact('users', 'kelas'));
     }
 

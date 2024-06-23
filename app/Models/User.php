@@ -20,13 +20,14 @@ class User extends Authenticatable
         'nomer_induk',
         'tanggal_lahir',
         'jenis_kelamin',
+        'alamat',
         'kelas',
     ];
     
     protected $hidden = [
         'password',
         'remember_token',
-    ];
+    ];    
 
     protected $casts = [
         'email_verified_at' => 'datetime',

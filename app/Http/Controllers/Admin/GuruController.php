@@ -87,7 +87,7 @@ class GuruController extends Controller
         $user = User::create($input);
         $user->roles()->sync($request->input('roles', []));
 
-        return redirect()->route('admin.guru.index')->with([
+        return redirect()->route('admin.users.index')->with([
             'message' => 'Guru successfully created!',
             'alert-type' => 'success'
         ]);
@@ -96,9 +96,7 @@ class GuruController extends Controller
     public function daftarNilai() {
         $user = Auth::user();
     
-        $categories = Category::where('user_id', $user->id)
-                          ->with(['results', 'mapel'])
-                          ->get();
+        $categories = Category::where('user_id', $user->id)->with(['results', 'mapel'])->get();
         return view('admin.guru.nilai', compact('categories'));
     }
     

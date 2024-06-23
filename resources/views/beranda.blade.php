@@ -31,7 +31,9 @@
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Alamat</label>
-                    <p></p>
+                    <div class="col-sm-9">
+                        <p>{{ $user->alamat }}</p>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Kelas</label>

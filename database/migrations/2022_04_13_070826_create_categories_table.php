@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->date('tanggal_ujian')->nullable();
             $table->time('jam_mulai')->nullable();
             $table->time('jam_selesai')->nullable();
+            $table->string('kode_ujian')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('mapel_id')->nullable();
 

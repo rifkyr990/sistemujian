@@ -147,4 +147,22 @@ class CategoryController extends Controller
         }
     }
 
+
+public function verifyExamCode(Request $request, $id)
+{
+    $category = Category::find($id);
+
+    if (!$category) {
+        return response()->json(['valid' => false, 'message' => 'Kategori tidak ditemukan']);
+    }
+
+    if ($request->exam_code === $category->kode_ujian) {
+        return response()->json(['valid' => true, 'category_id' => $category->id]);
+    } else {
+        return response()->json(['valid' => false, 'message' => 'Kode ujian tidak valid']);
+    }
+}
+
+
+
 }

@@ -17,8 +17,8 @@
                 <form method="POST" action="{{ route('login') }}" class="shadow-lg p-4 bg-body rounded">
                     @csrf
                     <div class="mb-3">
-                        <label for="email" class="form-label">{{ __('NIP / NISN') }}</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        <label for="email" class="form-label">{{ __('NIP / NISN / Email') }}</label>
+                        <input id="email" type="text" class="form-control @error('email') is-invalid @enderror"
                             name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -26,6 +26,7 @@
                         </span>
                         @enderror
                     </div>
+
 
                     <div class="mb-3">
                         <label for="password" class="form-label">{{ __('Password') }}</label>
@@ -52,7 +53,7 @@
 
                     <div class="d-flex justify-content-center align-items-center">
                         <button type="submit" class="btn btn-primary w-50">{{ __('Login') }}</button>
-                        
+
                     </div>
                 </form>
             </div>

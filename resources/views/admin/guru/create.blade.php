@@ -66,6 +66,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="alamat" class="col-sm-3 col-form-label">{{ __('Alamat') }}</label>
+                    <div class="col-sm-9">
+                        <textarea name="alamat" id="alamat" class="form-control" placeholder="alamat"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="kelas" class="col-sm-3 col-form-label">{{ __('Kelas') }}</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="kelas" name="kelas" required>
@@ -88,8 +94,8 @@
                     <div class="col-sm-9">
                         <select name="roles[]" id="roles" class="form-control select2" multiple="multiple" required>
                             @foreach($roles as $id => $roleName)
-                            @if($roleName == 'Guru' || $id == 3)
-                            <option value="{{ $id }}" {{ ($roleName == 'Guru' || $id == 3) ? 'selected' : '' }}>
+                            @if($roleName == 'guru')
+                            <option value="{{ $id }}" {{ ($roleName == 'guru') ? 'selected' : '' }}>
                                 {{ $roleName }}
                             </option>
                             @endif

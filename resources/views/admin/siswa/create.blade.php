@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.guru.store') }}" method="POST">
+            <form action="{{ route('admin.siswa.store') }}" method="POST">
                 @csrf
                 <div class="form-group row">
                     <label for="nomer_induk" class="col-sm-3 col-form-label">{{ __('NISN') }}</label>
@@ -66,6 +66,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="alamat" class="col-sm-3 col-form-label">{{ __('Alamat') }}</label>
+                    <div class="col-sm-9">
+                        <textarea name="alamat" id="alamat" class="form-control" placeholder="alamat"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="kelas" class="col-sm-3 col-form-label">{{ __('Kelas') }}</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="kelas" name="kelas" required>
@@ -88,8 +94,8 @@
                     <div class="col-sm-9">
                         <select name="roles[]" id="roles" class="form-control select2" multiple="multiple" required>
                             @foreach($roles as $id => $roleName)
-                            @if($roleName == 'Siswa')
-                            <option value="{{ $id }}" {{ ($roleName == 'Siswa') ? 'selected' : '' }}>
+                            @if($roleName == 'siswa')
+                            <option value="{{ $id }}" {{ ($roleName == 'siswa') ? 'selected' : '' }}>
                                 {{ $roleName }}
                             </option>
                             @endif

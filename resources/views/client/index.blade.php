@@ -20,12 +20,12 @@
                                 @endphp
                                 @if ($result)
                                 <p class="mb-0 float-start">
-                                    <a href="{{ route('admin.categories.show', $data->id) }}" class="text-decoration-none text-dark" style="pointer-events: none">{{ $data->name }}</a>
+                                    <a href="#" class="text-decoration-none text-dark open-modal" data-category-id="{{ $data->id }}" data-category-name="{{ $data->name }}" style="pointer-events: none">{{ $data->name }}</a>
                                 </p>
                                     <p class="float-end mb-0">{{ $result->score }} / 100</p>
                                 @else
                                     <p class="mb-0 float-start">
-                                        <a href="{{ route('admin.categories.show', $data->id) }}" class="text-decoration-none text-dark">{{ $data->name }}</a>
+                                        <a href="#" class="text-decoration-none text-dark open-modal" data-category-id="{{ $data->id }}" data-category-name="{{ $data->name }}" data-toggle="modal" data-target="#examCodeModal">{{ $data->name }}</a>
                                     </p>
                                     <p class="float-end mb-0">0/100</p>
                                 @endif
@@ -42,4 +42,32 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="examCodeModal" tabindex="-1" role="dialog" aria-labelledby="examCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="examCodeModalLabel">Masukkan Kode Ujian</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="examCodeForm" method="POST" action="">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="examCode">Kode Ujian</label>
+                        <input type="text" class="form-control" id="examCode" name="exam_code" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection

@@ -24,4 +24,9 @@ class Result extends Model
     {
         return $this->belongsTo(Mapel::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

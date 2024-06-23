@@ -61,6 +61,12 @@
                         <input type="time" class="form-control" name="jam_selesai" id="jam_selesai">
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="kode_ujian" class="col-sm-3 col-form-label">{{ __('Kode Ujian') }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="kode_ujian" id="kode_ujian" placeholder="kode ujian">
+                    </div>
+                </div>
                 <div class="form-group row mb-5">
                     <label for="user_id" class="col-sm-3 col-form-label">{{ __('Guru Pengampu') }}</label>
                     <div class="col-sm-9">
