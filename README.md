@@ -1,9 +1,4 @@
-# Laravel 8 - Quiz Application
-
-## Screenshots
-
-![preview img](/preview.png)
-![preview img](/preview2.png)
+# SISTEM UJIAN APPS
 
 ## Run Locally
 
