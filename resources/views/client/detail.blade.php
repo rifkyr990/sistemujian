@@ -54,9 +54,7 @@
             }
             @endphp
             @if(isset($question))
-            <form id="answer-form"
-                action="{{ route('admin.categories.answer', ['category' => $category->id, 'question' => $currentQuestionIndex]) }}"
-                method="POST">
+            <form id="answer-form" action="" method="POST">
                 @csrf
                 <input type="hidden" name="category_id" value="{{ $category->id }}">
                 <input type="hidden" name="question_id" value="{{ $question->id }}">
@@ -64,11 +62,27 @@
                     <div class="card-body">
                         <div class="d-block">
                             <div class="d-flex justify-content-between align-items-center">
-                                <button class="btn btn-outline-dark btn-sm" disabled><strong>Soal No.
-                                        {{ $currentQuestionIndex + 1 }} </strong></button>
-                                <button class="btn btn-outline-dark btn-sm"
-                                    disabled><strong>{{ $pointQuestion }}</strong></button>
+                                <div>
+                                    <button class="btn btn-outline-dark btn-sm" disabled>
+                                        <strong>Soal No.{{ $currentQuestionIndex + 1 }} </strong>
+                                    </button>
+                                    @if(isset($selectedAnswers[$question->id]) &&
+                                    !$selectedAnswers[$question->id]->is_correct)
+                                    <button class="btn btn-danger btn-sm ms-2">X Salah</button>
+                                    @endif
+                                </div>
+                                @if(isset($selectedAnswers[$question->id]) &&
+                                    !$selectedAnswers[$question->id]->is_correct)
+                                <button class="btn btn-outline-dark btn-sm ml-auto" disabled>
+                                    <strong>0 / {{ $pointQuestion }}</strong>
+                                </button>
+                                @else
+                                <button class="btn btn-outline-dark btn-sm ml-auto" disabled>
+                                    <strong>{{ $pointQuestion }} / {{ $pointQuestion }}</strong>
+                                </button>
+                                @endif
                             </div>
+
                             <p class="mt-3">{{ $question->question_text }}</p>
                             <div>
                                 @can('question_delete')
@@ -86,8 +100,9 @@
                             @foreach ($question->options as $option)
                             <li class="mx-auto px-3">
                                 <input type="radio" id="option{{ $currentQuestionIndex }}{{ $loop->index }}"
-                                    name="answer" value="{{ $option->id }}" @if(session('answers.' . $question->id) ==
-                                $option->id) checked @endif>
+                                    name="answer" value="{{ $option->id }}" @if(isset($selectedAnswers[$question->id])
+                                && $selectedAnswers[$question->id]->selected_option_id == $option->id)
+                                checked @endif>
                                 <label
                                     for="option{{ $currentQuestionIndex }}{{ $loop->index }}">{{ $option->option_text }}</label>
                             </li>
@@ -132,8 +147,8 @@
                             @foreach($questions as $index => $q)
                             <div class="col-4 mb-3">
                                 <li
-                                    class="list-group-item text-center rounded-3 {{ session('answers.' . $q->id) ? 'bg-success-dashboard' : 'bg-secondary-custom' }}">
-                                    <a href="{{ route('admin.categories.show', ['category' => $category->id, 'question' => $index]) }}"
+                                    class="list-group-item text-center rounded-3 {{ isset($selectedAnswers[$q->id]) ? 'bg-success-dashboard' : 'bg-secondary-custom' }}">
+                                    <a href="{{ route('admin.categories.results', ['category' => $category->id, 'question' => $index]) }}"
                                         class="text-dark text-decoration-none">{{ $index + 1 }}</a>
                                 </li>
                             </div>

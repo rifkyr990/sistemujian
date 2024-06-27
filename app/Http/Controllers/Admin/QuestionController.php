@@ -175,7 +175,6 @@ class QuestionController extends Controller
         $request->validate([
         ]);
 
-        // Proses menghitung skor dan menyimpan hasil ke database
         $questions = session('questions');
         $answers = session('answers', []);
         $totalQuestions = count($questions);

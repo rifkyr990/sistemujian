@@ -126,15 +126,12 @@
                             </a>
                             @endif
                     </div>
-
-                    @can('siswa_access')
                     <div>
-                        @if($currentQuestionIndex === $questions->count() - 1)
-                        <button type="submit" name="finish" class="btn btn-success me-2">Selesai</button>
+                        @if($currentQuestionIndex === $questions->count() - 2)
                         @endif
+                        <button type="submit" name="finish" class="btn btn-success me-2">Selesai</button>
                         <button type="submit" name="save" class="btn bg-success-dashboard">Simpan</button>
                     </div>
-                    @endcan
                 </div>
             </form>
             @else
