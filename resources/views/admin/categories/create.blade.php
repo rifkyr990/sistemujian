@@ -64,16 +64,17 @@
                 <div class="form-group row">
                     <label for="kode_ujian" class="col-sm-3 col-form-label">{{ __('Kode Ujian') }}</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="kode_ujian" id="kode_ujian" placeholder="kode ujian">
+                        <input type="text" class="form-control" name="kode_ujian" id="kode_ujian"
+                            placeholder="kode ujian">
                     </div>
                 </div>
                 <div class="form-group row mb-5">
                     <label for="user_id" class="col-sm-3 col-form-label">{{ __('Guru Pengampu') }}</label>
                     <div class="col-sm-9">
                         <select class="form-control" name="user_id" id="user_id">
-                            <option value="">{{ __('-- Pilih Guru Pengampu --') }}</option>
-                            @foreach($users as $id => $user)
-                            <option value="{{ $id }}">{{ $user }}</option>
+                            <option value="">-- Pilih Guru --</option>
+                            @foreach($guru as $id => $nama)
+                            <option value="{{ $id }}">{{ $nama }}</option>
                             @endforeach
                         </select>
                     </div>

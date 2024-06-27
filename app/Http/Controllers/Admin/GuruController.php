@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Mapel;
 use App\Models\Result;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class GuruController extends Controller
@@ -64,16 +65,11 @@ class GuruController extends Controller
         ]);
     }
 
-
-
-    public function show()
+    public function show($id)
     {
-        $user = auth()->user();
-        $mapel = Mapel::where('user_id', $user->id)->first();
-
-        return view('admin.mapel.show', compact('mapel'));
+        $user = User::findOrFail($id);
+        return view('admin.guru.show', compact('user'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -95,9 +91,15 @@ class GuruController extends Controller
 
     public function daftarNilai() {
         $user = Auth::user();
-    
         $categories = Category::where('user_id', $user->id)->with(['results', 'mapel'])->get();
         return view('admin.guru.nilai', compact('categories'));
     }
-    
+
+    public function myClass()
+    {
+        $user = auth()->user();
+        $mapel = Mapel::where('user_id', $user->id)->first();
+
+        return view('admin.mapel.show', compact('mapel'));
+    }
 }

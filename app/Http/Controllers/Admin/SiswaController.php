@@ -96,18 +96,17 @@ class SiswaController extends Controller
     public function jadwalUjian()
     {
         Carbon::setLocale('id');
-        $userId = Auth::id();
-        $user = auth()->user();
-        $category = Category::first();
+        $user = Auth::user();
         $kelas = $user->kelas;
-
+        $results = Result::where('user_id', $user->id)->get();
+        $category = Category::first();
         $ujian = Category::whereHas('mapel', function ($query) use ($kelas) {
             $query->where('kelas', $kelas);
         })->get();
 
         if ($category) {
             $categoryId = $category->id;
-            $results = Result::where('user_id', $userId)->where('category_id', $categoryId)->get();
+            $results = Result::where('user_id', $user->id)->where('category_id', $categoryId)->get();
             $ujian->each(function ($data) {
                 $data->formatted_tanggal_ujian = Carbon::parse($data->tanggal_ujian)->translatedFormat('d F Y');
                             });

@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
+use Carbon\Carbon;
 use App\Models\Mapel;
+use App\Models\Question;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,10 +31,12 @@ class CategoryController extends Controller
     public function create()
     {
         abort_if(Gate::denies('class_create'), Response::HTTP_FORBIDDEN, 'Akses tidak diizinkan');
-        $users = User::all()->pluck('name', 'id');
+        $guru = User::whereHas('roles', function ($query) {
+            $query->where('title', 'guru');
+        })->pluck('name', 'id');
         $mapels = Mapel::all()->pluck('nama_mapel', 'id');
 
-        return view('admin.categories.create', compact('users', 'mapels'));
+        return view('admin.categories.create', compact('guru', 'mapels'));
     }
 
     public function store(Request $request)
@@ -53,8 +57,17 @@ class CategoryController extends Controller
 
     public function show(Request $request, $categoryId, $questionIndex = 0)
     {
+        Carbon::setLocale('id');
         $category = Category::with('questions.options')->findOrFail($categoryId);
         $questions = $category->questions;
+        $countQuestion = $questions->count();
+        $tanggal = Carbon::parse($category->tanggal_ujian)->translatedFormat('d F Y');
+
+        if ($countQuestion > 0) {
+            $pointQuestion = 100 / $countQuestion;
+        } else {
+            $pointQuestion = 0;
+        }
     
         if ($request->isMethod('post')) {
             $answers = $request->session()->get('answers', []);
@@ -67,7 +80,7 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.show', ['category' => $categoryId, 'question' => $questionIndex + 1]);
         }
         
-        return view('admin.categories.show', compact('category', 'questions'));
+        return view('admin.categories.show', compact('category', 'questions', 'countQuestion', 'pointQuestion', 'tanggal'));
     }
 
     public function edit(Category $category)
@@ -84,9 +97,7 @@ class CategoryController extends Controller
         abort_if(Gate::denies('class_edit'), Response::HTTP_FORBIDDEN, 'Akses tidak diizinkan');
         $request->validate([
             'name' => 'required|string|max:255',
-            'kelas' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
-            'kode_kelas' => 'required|string|max:255',
         ]);
 
         $category->update($request->all());
@@ -148,21 +159,46 @@ class CategoryController extends Controller
     }
 
 
-public function verifyExamCode(Request $request, $id)
-{
-    $category = Category::find($id);
+    public function verifyExamCode(Request $request, $id)
+    {
+        $category = Category::find($id);
 
-    if (!$category) {
-        return response()->json(['valid' => false, 'message' => 'Kategori tidak ditemukan']);
+        if (!$category) {
+            return response()->json(['valid' => false, 'message' => 'Kategori tidak ditemukan']);
+        }
+
+        if ($request->exam_code === $category->kode_ujian) {
+            return redirect()->route('admin.categories.show', $category->id);
+        } else {
+            return redirect()->back()->with([
+                'message' => 'Kode Ujian Salah!',
+                'alert-type' => 'danger'
+            ]);
+        }
     }
 
-    if ($request->exam_code === $category->kode_ujian) {
-        return response()->json(['valid' => true, 'category_id' => $category->id]);
-    } else {
-        return response()->json(['valid' => false, 'message' => 'Kode ujian tidak valid']);
+    public function showResults($categoryId)
+    {
+        $userId = Auth::id();
+        $results = Result::where('user_id', $userId)->get();
+        $category = Category::with('mapel')->findOrFail($categoryId);
+        $questions = Question::where('category_id', $categoryId)->get();
+        $countQuestion = $questions->count();
+        $tanggal = Carbon::parse($category->tanggal_ujian)->translatedFormat('d F Y');
+
+        $userId = Auth::id();
+        $results = Result::where('user_id', $userId)->where('category_id', $categoryId)->get();
+        $totalScore = $results->sum('score');
+
+        if ($countQuestion > 0) {
+            $pointQuestion = 100 / $countQuestion;
+        } else {
+            $pointQuestion = 0;
+        }
+
+        $selectedAnswers = $results->pluck('answer_id', 'question_id')->toArray();
+
+        return view('client.detail', compact('category', 'questions', 'pointQuestion', 'countQuestion', 'tanggal', 'totalScore', 'selectedAnswers'));
     }
-}
-
-
 
 }

@@ -13,41 +13,29 @@
         </ul>
     </div>
     @endif
-    <div class="container row">
+
+    <div class="container">
         <h2 style="font-weight: 600px;" class="mb-3 float-start">{{$question->category->name}}</h2>
     </div>
-    <div class="mb-3">
-        <div class="d-flex flex-wrap justify-content-start shadow-lg rounded-3 py-2">
-            <div class="input-group-prepend">
-                <span class="input-group-text bg-transparent border-0 control-label fw-bold">Navigasi Soal</span>
-            </div>
-            @foreach($listQuestion as $index => $q)
-            <a href="{{ route('admin.questions.edit', $q->id) }}" class="btn btn-outline-primary m-1">
-                {{ $index + 1 }}
-            </a>
+    <div class="container py-3 shadow-lg rounded-3 mb-3 d-flex align-content-center">
+        <label for="navigasi" class="fw-bold">Navigasi Soal</label>
+        <div style="margin-left: 30px;">
+            @foreach($listQuestion as $question)
+            <a href="{{ route('admin.questions.edit', $question->id) }}"
+                class="btn btn-sm btn-outline-primary btn-navigation mx-1">{{ $question->id }}</a>
             @endforeach
         </div>
     </div>
+
     <div class="container shadow-lg rounded-3 bg-light">
         <div class="card-body">
-            <div class="float-end">
-                @can('question_delete')
-                <form onclick="return confirm('Are you sure?')"
-                    action="{{ route('admin.questions.destroy', $question->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"
-                            aria-hidden="true"></i></button>
-                </form>
-                @endcan
-            </div>
             <form method="POST" action="{{ route('admin.questions.update', $question->id) }}">
                 @csrf
                 @method('PUT')
-                <div class="form-group required mt-2">
+                <div class="form-group required">
                     <label for="nomer-urut" class="control-label fw-bold">{{ __('Nomer Urut') }}</label>
                     <input type="text" class="form-control" id="question_text" placeholder="{{ __('question text') }}"
-                        name="question_text" value="{{ $nextQuestionNumber }}" disabled />
+                        name="question_text" value="{{ $question->id }}" disabled/>
                 </div>
                 <div class="form-group" hidden>
                     <label for="category">{{ __('Judul Ujian') }}</label>
@@ -61,8 +49,7 @@
 
                 <div class="form-group required">
                     <label for="question_text" class="control-label fw-bold">{{ __('Pertanyaan') }}</label>
-                    <textarea class="form-control" id="question_text" name="question_text"
-                        placeholder="{{ __('question text') }}">{{ $question->question_text }}</textarea>
+                    <textarea class="form-control" id="question_text" name="question_text" placeholder="{{ __('question text') }}">{{ $question->question_text }}</textarea>
                 </div>
 
                 <div class="form-group required mb-4">
@@ -94,15 +81,14 @@
                                 <span class="input-group-text bg-transparent border-0 control-label fw-bold">Bobot
                                     Nilai</span>
                             </div>
-                            <input type="text" name="" id="" class="form-control" style="width: 80px;" value="{{$calculatePointQuestion}}">
+                            <input type="text" name="" id="" class="form-control" style="width: 80px;">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-transparent border-0">Dari</span>
                             </div>
                             <input type="text" name="" id="" class="form-control" style="width: 80px;" value="100">
                         </div>
                     </div>
-                    <a href="{{ route('admin.questions.createQuestions', $question->category->id) }}"
-                        class="btn bg-success-dashboard text-dark px-3 align-self-end">
+                    <a href="{{ route('admin.questions.createQuestions', $question->category->id) }}" class="btn bg-success-dashboard text-dark px-3 align-self-end">
                         <span class="icon text-dark"><i class="fa fa-plus-circle"></i></span> Tambah Soal
                     </a>
                     <button type="submit" class="position-absolute top-0 end-0 btn bg-primary-dashboard text-light"

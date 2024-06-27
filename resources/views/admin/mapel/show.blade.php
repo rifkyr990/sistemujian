@@ -3,27 +3,56 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h2>{{ $mapel->nama_mapel }}</h2>
+        <div class="col-md-8">
+            <div class="card border-0">
+                <div class="card-header bg-transparent">
+                    <h1 style="font-weight: 600;">{{ $mapel->nama_mapel }} Kelas {{$mapel->kelas}}</h1>
                 </div>
-                <div class="card-body">
-                    <p><strong>Guru Pengampu:</strong> {{$mapel->user?->name}}</p>
-                    <p><strong>Kelas:</strong> {{ $mapel->kelas }}</p>
-                    <p><strong>Kode Mapel:</strong> {{ $mapel->kode_mapel }}</p>
-                    <hr>
-                    <ul>
+                <div class="card-body bg-transparent">
+                    <a href="{{route('client.nilai')}}" class="btn bg-primary-dashboard px-5 text-light">Nilai</a>
+                    <ul class="mt-5 list-unstyled row">
                         @foreach ($mapel->category as $ujian)
-                        <li><a href="{{ route('admin.categories.show', $ujian->id) }}">{{$ujian->name}}</a></li>
+                        <li class="col-md-12 shadow-md py-2 px-0 rounded-3 my-2 bg-gray-200">
+                            <div class="d-flex justify-content-around align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <img src="{{ asset('img/img3.png') }}" alt="" width="35px"
+                                        class="rounded-circle me-2">
+                                    <a href="{{ route('admin.questions.createQuestions', $ujian->id) }}"
+                                        class="text-decoration-none text-dark">{{$ujian->name}}</a>
+                                </span>
+                                <span class="d-flex align-items-center">
+                                    <img src="{{ asset('img/calendar.svg') }}" alt="icon-calendar" width="auto"
+                                        class="me-2">
+                                    {{ $ujian->tanggal_ujian }}
+                                </span>
+                                <span class="d-flex align-items-center">
+                                    <img src="{{ asset('img/time.svg') }}" alt="icon-time" class="me-2">
+                                    {{ $ujian->jam_mulai }} - {{ $ujian->jam_selesai }}
+                                </span>
+                                <a href="{{ route('admin.questions.createQuestions', $ujian->id) }}"
+                                    class="text-decoration-none text-dark">
+                                    <i class="fa fa-angle-right fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+
+                        </li>
                         @endforeach
                     </ul>
-                    <hr>
-                    <div class="text-right">
-                        <a href="{{ route('admin.mapel.index') }}" class="btn btn-primary">Back to List</a>
-                    </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-4">
+            <section class="ftco-section shadow-sm">
+                <div class="calendar calendar-first rounded" id="calendar_first">
+                    <div class="calendar_header">
+                        <button class="switch-month switch-left"> <i class="fa fa-chevron-left"></i></button>
+                        <h2></h2>
+                        <button class="switch-month switch-right"> <i class="fa fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar_weekdays"></div>
+                    <div class="calendar_content"></div>
+                </div>
+            </section>
         </div>
     </div>
 </div>

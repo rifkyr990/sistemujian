@@ -20,11 +20,6 @@ class Result extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function mapel()
-    {
-        return $this->belongsTo(Mapel::class);
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);

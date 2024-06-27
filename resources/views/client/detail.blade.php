@@ -6,7 +6,6 @@
     {{ session('status') }}
 </div>
 @endif
-
 <div class="container">
     <div class="row mx-2">
         <div class="col-md-12">
@@ -14,7 +13,7 @@
                 <div class="card-body mx-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2 style="font-weight: 500;" class="my-3">{{ $category->name }}</h2>
-                        <button class="btn btn-outline-dark btn-md" disabled> 0 / 100</button>
+                        <button class="btn btn-outline-dark btn-md" disabled>{{ $totalScore }} / 100</button>
                     </div>
                     @can('question_create')
                     <a href="{{ route('admin.questions.create') }}" class="btn btn-primary">
@@ -22,35 +21,25 @@
                     </a>
                     @endcan
                     <table>
-                        <thead>
-                            <tr>
-                                <td scope="col">Mata Pelajaran</td>
-                                <td scope="col"><span class="ms-2">: {{ $category->mapel->nama_mapel }}</span></td>
-                            </tr>
-                        </thead>
                         <tbody>
                             <tr>
+                                <td scope="col">Mata Pelajaran</td>
+                                <td scope="col">: {{ $category->mapel->nama_mapel }}</td>
+                            </tr>
+                            <tr>
                                 <td>Kelas</td>
-                                <td><span class="ms-2">: {{ $category->mapel?->kelas }}</span></td>
+                                <td>: {{ $category->mapel?->kelas }}</td>
                             </tr>
                             <tr>
                                 <td>Tanggal Ujian</td>
-                                <td><span class="ms-2">: {{ $tanggal }}</span></td>
+                                <td>: {{ $tanggal }}</td>
                             </tr>
                             <tr>
                                 <td>Waktu Ujian</td>
-                                <td><span class="ms-2">: {{ $category->jam_mulai }} - {{ $category->jam_selesai }}
-                                        WIB</span></td>
+                                <td>: {{ $category->jam_mulai }} - {{ $category->jam_selesai }} WIB</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="mb-1"> </p>
-                        <p class="mb-1"></p>
-                        <p class="mb-1"> </p>
-                        <p> </p>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -93,13 +82,12 @@
                                 @endcan
                             </div>
                         </div>
-
                         <ul class="list-unstyled">
                             @foreach ($question->options as $option)
                             <li class="mx-auto px-3">
                                 <input type="radio" id="option{{ $currentQuestionIndex }}{{ $loop->index }}"
-                                    name="answer" value="{{ $option->id }}" @if(session('answers.' . $question->id)
-                                == $option->id) checked @endif>
+                                    name="answer" value="{{ $option->id }}" @if(session('answers.' . $question->id) ==
+                                $option->id) checked @endif>
                                 <label
                                     for="option{{ $currentQuestionIndex }}{{ $loop->index }}">{{ $option->option_text }}</label>
                             </li>
@@ -110,29 +98,21 @@
                 <div class="d-flex justify-content-between mt-3">
                     <div>
                         @if($currentQuestionIndex > 0)
-                        <a href="{{ route('admin.categories.show', ['category' => $category->id, 'question' => $currentQuestionIndex - 1]) }}"
-                            class="btn bg-primary-dashboard text-light">
-                            Kembali
-                        </a>
+                        <a href="{{ route('admin.categories.results', ['category' => $category->id, 'question' => $currentQuestionIndex - 1]) }}"
+                            class="btn bg-primary-dashboard text-light">Kembali</a>
                         @endif
-                        <span class="ms-2 text-gray-500">
-                            {{ $currentQuestionIndex + 1 }} dari {{ $countQuestion }} soal
-                        </span>
+                        <span class="ms-2 text-gray-500">{{ $currentQuestionIndex + 1 }} dari {{ $countQuestion }}
+                            soal</span>
                         @if($currentQuestionIndex < $questions->count() - 1)
-                            <a href="{{ route('admin.categories.show', ['category' => $category->id, 'question' => $currentQuestionIndex + 1]) }}"
-                                class="btn bg-primary-dashboard text-light ms-2 ">
-                                <!-- ms-2 untuk margin kiri -->
-                                Selanjutnya
-                            </a>
+                            <a href="{{ route('admin.categories.results', ['category' => $category->id, 'question' => $currentQuestionIndex + 1]) }}"
+                                class="btn bg-primary-dashboard text-light ms-2">Selanjutnya</a>
                             @endif
                     </div>
-
                     @can('siswa_access')
                     <div>
                         @if($currentQuestionIndex === $questions->count() - 1)
                         <button type="submit" name="finish" class="btn btn-success me-2">Selesai</button>
                         @endif
-                        <button type="submit" name="save" class="btn bg-success-dashboard">Simpan</button>
                     </div>
                     @endcan
                 </div>
@@ -178,7 +158,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

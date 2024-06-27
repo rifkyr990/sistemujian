@@ -16,6 +16,7 @@
                                 <th>Judul Ujian</th>
                                 <th>Skor</th>
                                 <th>Tanggal Ujian</th>
+                                <th>Detail</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,6 +25,7 @@
                                 <td>{{ $result->category->name }}</td>
                                 <td>{{ $result->score }}</td>
                                 <td>{{ $result->created_at->format('d-m-Y H:i') }}</td>
+                                <td><a href="{{ route('admin.categories.results', $result->category->id) }}" class="btn btn-primary">Detail</a></td>
                             </tr>
                             @endforeach
                         </tbody>

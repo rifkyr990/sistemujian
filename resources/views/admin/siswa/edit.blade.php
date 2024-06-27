@@ -19,7 +19,7 @@
     <div class="container">
         <div class="card-header bg-transparent">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="fw-header">{{ __('Edit Data Siswa')}}</h1>
+                <h1 class="fw-heading">{{ __('Edit Data Siswa')}}</h1>
             </div>
         </div>
         <div class="card-body">
@@ -67,6 +67,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="alamat" class="col-sm-3 col-form-label">{{ __('Alamat') }}</label>
+                    <div class="col-sm-9">
+                        <textarea name="alamat" id="alamat" class="form-control">{{$user->alamat}}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="password" class="col-sm-3 col-form-label">{{ __('Password') }}</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="password" placeholder="{{ __('Password') }}"
@@ -87,7 +93,7 @@
                 </div>
                 <div class="form-group row mt-5">
                     <div class="col-sm-12 d-flex justify-content-end">
-                        <a href="{{ route('admin.siswa.index') }}" class="btn btn-danger mx-2">{{ __('Batal') }}</a>
+                        <a href="{{ url('admin/siswa/kelas/' . $user->kelas) }}" class="btn btn-danger mx-2">{{ __('Batal') }}</a>
                         <button type="submit" class="btn btn-success">{{ __('Simpan') }}</button>
                     </div>
                 </div>

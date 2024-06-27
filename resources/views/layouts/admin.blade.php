@@ -23,13 +23,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('backend/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css')}}">
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
         }
@@ -53,7 +54,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar static-top">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
@@ -95,7 +96,10 @@
                 @if(session()->has('message'))
                 <div class="alert alert-{{ session()->get('alert-type') }} alert-dismissible fade show" role="alert"
                     id="alert-message">
-                    {{ session()->get('message') }}
+                    @if (session('alert-type') == 'danger')
+                    <i class="fas fa-exclamation-triangle"></i> <!-- Ikon bahaya -->
+                    @endif
+                    {{ session('message') }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

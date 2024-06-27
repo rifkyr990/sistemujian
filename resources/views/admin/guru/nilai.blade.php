@@ -3,47 +3,56 @@
 @section('content')
 <div class="container-fluid">
     <!-- Content Row -->
-    @foreach($categories as $category)
+    @if($categories->isNotEmpty())
     <div class="container">
         <div class="card-header py-3 bg-transparent">
             <h1 class="fw-heading">Daftar Nilai</h1>
-            <h4>{{ $category->mapel->nama_mapel }} - Kelas {{$category->mapel->kelas}}</h4>
+            <h4>{{ $categories->first()->mapel->nama_mapel }} - Kelas {{$categories->first()->mapel->kelas}}</h4>
         </div>
+    </div>
+    @endif
+
+    <div class="container">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover datatable datatable-User" cellspacing="0"
-                    width="100%">
+                <table class="table table-bordered table-striped table-hover datatable datatable-User" cellspacing="0" width="100%">
                     <thead class="bg-primary-dashboard text-light">
                         <tr>
                             <th>No</th>
                             <th>NISN</th>
                             <th>Nama Siswa</th>
-                            <th>Judul Ujian</th>
-                            <th>Skor</th>
+                            @foreach($categories as $category)
+                                <th>{{ singkatJudul($category->name) }}</th>
+                            @endforeach
                         </tr>
                     </thead>
-                    @if($categories->isEmpty())
-                    <p>Tidak ada data nilai untuk ditampilkan.</p>
-                    @else
-                        @foreach($category->results as $index => $result)
+                    <tbody>
+                        @php
+                            $resultsByUser = [];
+                            foreach ($categories as $category) {
+                                foreach ($category->results as $result) {
+                                    $resultsByUser[$result->user->id]['user'] = $result->user;
+                                    $resultsByUser[$result->user->id]['scores'][$category->id] = $result->score;
+                                }
+                            }
+                        @endphp
+                        @foreach($resultsByUser as $userId => $userData)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $result->user->nomer_induk }}</td>
-                            <td>{{ $result->user->name }}</td>
-                            <th>{{ $category->name }}</th>
-                            <td>{{ $result->score }}</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $userData['user']->nomer_induk }}</td>
+                            <td>{{ $userData['user']->name }}</td>
+                            @foreach($categories as $category)
+                                <td>{{ $userData['scores'][$category->id] ?? '-' }}</td>
+                            @endforeach
                         </tr>
                         @endforeach
-                    @endif
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-    @endforeach
-    <!-- Content Row -->
 </div>
 @endsection
-
 
 @push('script-alt')
 <script>

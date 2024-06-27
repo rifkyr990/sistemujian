@@ -4,22 +4,22 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">
-                {{ __('question') }}
-            </h6>
+            <h2 class="m-0 fw-heading text-dark">
+                {{ __('Database Soal') }}
+            </h2>
             <div class="ml-auto">
-                <a href="{{ route('admin.questions.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.questions.create') }}" class="btn bg-success-dashboard">
                     <span class="icon text-white-50">
-                        <i class="fa fa-plus"></i>
+                        <i class="fa fa-plus-circle"></i>
                     </span>
-                    <span class="text">{{ __('New question') }}</span>
+                    <span class="text">{{ __('Tambah Pertanyaan') }}</span>
                 </a>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover datatable datatable-question" cellspacing="0" width="100%">
-                    <thead>
+                    <thead class="bg-primary-dashboard text-light">
                         <tr>
                             <th width="10"></th>
                             <th>No</th>

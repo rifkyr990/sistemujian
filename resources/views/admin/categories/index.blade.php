@@ -32,6 +32,7 @@
                                 <th>Mata pelajaran</th>
                                 <th>Guru pengampu</th>
                                 <th>Kelas</th>
+                                <th>Kode Ujian</th>
                                 <th>Tanggal Ujian</th>
                                 <th>Jam mulai</th>
                                 <th>Jam selesai</th>
@@ -49,6 +50,7 @@
                                 <td> {{ $category->mapel?->nama_mapel }} </td>
                                 <td>{{ $category->user?->name }}</td>
                                 <td> {{ $category->mapel?->kelas }} </td>
+                                <td> {{ $category->kode_ujian }} </td>
                                 <td> {{ $category->tanggal_ujian }} </td>
                                 <td> {{ $category->jam_mulai }} </td>
                                 <td> {{ $category->jam_selesai }} </td>

@@ -13,11 +13,13 @@ use App\Http\Requests\Admin\ResultRequest;
 class ResultController extends Controller
 {
     public function index(): View
-    {
-        $results = Result::all();
+{
+    $results = Result::with('user', 'category.mapel')->get();
 
-        return view('admin.results.index', compact('results'));
-    }
+    return view('admin.results.index', compact('results'));
+}
+
+
 
     public function create(): View
     {

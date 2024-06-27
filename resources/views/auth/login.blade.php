@@ -4,7 +4,7 @@
 <div class="container-fluid vh-100">
     <div class="row h-100">
         <!-- Left Side -->
-        <div class="col-md-6 d-none d-md-flex bg-image justify-content-end align-items-center bg-primary">
+        <div class="col-md-6 d-none d-md-flex bg-image justify-content-end align-items-center bg-primary-dashboard">
             <img src="https://i.ibb.co.com/7CLwYyy/image-5.png" alt="" class="w-75">
         </div>
 
@@ -46,13 +46,13 @@
                             
                         <label class="form-check-label" for="remember">{{ __('Remember Me') }}</label> -->
                         @if (Route::has('password.request'))
-                        <a class="btn btn-link"
-                            href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                        <a class="btn btn-link text-decoration-none"
+                            href="{{ route('password.request') }}" style="color: #00000099;">{{ __('Lupa Password?') }}</a>
                         @endif
                     </div>
 
                     <div class="d-flex justify-content-center align-items-center">
-                        <button type="submit" class="btn btn-primary w-50">{{ __('Login') }}</button>
+                        <button type="submit" class="btn bg-secondary-custom w-50">{{ __('Masuk') }}</button>
 
                     </div>
                 </form>

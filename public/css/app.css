@@ -12382,3 +12382,20 @@ button.switch-month:hover {
 .fw-heading {
     font-weight: 700;
 }
+
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
+
+.no-hover:hover,
+.no-hover a:hover {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.bg-secondary-custom {
+    background-color: #DADADA;
+}

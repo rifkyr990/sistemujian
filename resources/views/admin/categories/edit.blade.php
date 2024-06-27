@@ -18,7 +18,7 @@
     <div class="container">
         <div class="card-header bg-transparent">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">{{ __('Edit Kategori') }}</h1>
+                <h2 class="mb-0 fw-heading">{{ __('Edit Ujian') }}</h2>
             </div>
         </div>
         <div class="card-body">
@@ -70,7 +70,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row mb-5">
+                <div class="form-group row">
                     <label for="user_id" class="col-sm-3 col-form-label">{{ __('Guru Pengampu') }}</label>
                     <div class="col-sm-9">
                         <select class="form-control" name="user_id" id="user_id">
@@ -78,6 +78,14 @@
                             <option value="{{ $id }}" {{ $id == $category->user_id ? 'selected' : '' }}>{{ $user }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-5">
+                    <label for="kode_ujian" class="col-sm-3 col-form-label">{{ __('Kode Ujian') }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="kode_ujian" placeholder="{{ __('Nama') }}"
+                            name="kode_ujian" value="{{ old('kode_ujian', $category->kode_ujian) }}" />
                     </div>
                 </div>
 

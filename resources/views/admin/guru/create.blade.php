@@ -1,6 +1,4 @@
 @extends('layouts.admin')
-@section('content')
-@extends('layouts.admin')
 
 @section('content')
 <div class="container-fluid">
@@ -114,6 +112,4 @@
     </div>
     <!-- Content Row -->
 </div>
-@endsection
-
 @endsection
